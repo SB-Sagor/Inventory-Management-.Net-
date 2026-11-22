@@ -1,3 +1,5 @@
+using InventoryManagement.Services;
+
 var builder = WebApplication.CreateBuilder(args); // dotnet er built-in method ja application startup er jonno proyojonio configuration ready kore 
 
 // Add services to the container.
@@ -6,6 +8,7 @@ builder.Services.AddControllers(); // addcontrollers dotnet ke janasse je contro
 builder.Services.AddOpenApi(); // service register kore 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<ProductService>();
 
 var app = builder.Build(); // builder diye application configure kori and app diye request pipeline configure kori 
 

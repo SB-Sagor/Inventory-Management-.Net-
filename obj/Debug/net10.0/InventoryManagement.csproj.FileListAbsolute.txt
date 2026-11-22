@@ -35,3 +35,4 @@
 /Users/sheikh/Documents/GTR/dotnet_project/InventoryManagement/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerGen.dll
 /Users/sheikh/Documents/GTR/dotnet_project/InventoryManagement/bin/Debug/net10.0/Swashbuckle.AspNetCore.SwaggerUI.dll
 /Users/sheikh/Documents/GTR/dotnet_project/InventoryManagement/obj/Debug/net10.0/InventoryManagement.sourcelink.json
+/Users/sheikh/Documents/GTR/dotnet_project/InventoryManagement/bin/Debug/net10.0/dotnet-tools.json
