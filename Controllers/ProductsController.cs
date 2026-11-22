@@ -1,10 +1,17 @@
+<<<<<<< HEAD
 using InventoryManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using InventoryManagement.DTOs;
+=======
+using Microsoft.AspNetCore.Mvc;
+using InventoryManagement.Models;
+
+>>>>>>> 4724b1dd94b122ecb981d6edf46f7c988e5fdb05
 namespace InventoryManagement.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
+<<<<<<< HEAD
 public class ProductsController : ControllerBase//build in api er response Ok(), NotFound(), BadRequest()egula support kore 
 {
     private static readonly List<Product> _products =
@@ -116,3 +123,31 @@ public class ProductsController : ControllerBase//build in api er response Ok(),
         return Ok(product);
     }
 }
+=======
+
+public class ProductsController : ControllerBase
+{
+    private static readonly List<Product> _products = [
+
+        new Product{
+Id=1,Name="laptop",Price=7500m,Stock=10
+    },
+    new Product{
+        Id=2,Name="Mouse",Price=1200m,Stock=50
+
+    },
+
+new Product{
+            Id=2,Name="Keboard",Price=2500m,Stock=25
+
+
+    }
+
+    ];
+    [HttpGet]
+    public IEnumerable<Product> GetProducts()
+    {
+        return _products;
+    }
+}
+>>>>>>> 4724b1dd94b122ecb981d6edf46f7c988e5fdb05

@@ -6,6 +6,7 @@ public class Product
     public string Name { get; set; } = string.Empty;
     public decimal Price { get; set; }
     public int Stock { get; set; }
+<<<<<<< HEAD
     public int quantity { get; set; }
 
     public Product()
@@ -41,5 +42,7 @@ public class Product
         }
         Stock -= quantity;
     }
+=======
+>>>>>>> 4724b1dd94b122ecb981d6edf46f7c988e5fdb05
 
 }

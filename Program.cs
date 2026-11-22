@@ -13,9 +13,15 @@ var app = builder.Build();//builder diye application configure kori and app diye
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())//check hocce app development mode a cholse kina jodi chole 
 {
+<<<<<<< HEAD
     app.MapOpenApi();//open api er json document er endpoint map hobe and mapopenapi endpoint expose kore 
     app.UseSwagger();
     app.UseSwaggerUI();
+=======
+    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();//open api er json document er endpoint map hobe and mapopenapi endpoint expose kore 
+>>>>>>> 4724b1dd94b122ecb981d6edf46f7c988e5fdb05
 }
 
 app.UseHttpsRedirection();//http redirect korar middleware
