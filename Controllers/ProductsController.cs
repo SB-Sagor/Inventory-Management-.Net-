@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace InventoryManagement.Controllers;
 
-[ApiController]
+[ApiController]//api controller behaivour enable kore 
 [Route("api/[controller]")]
 public class ProductsController : ControllerBase // built-in api er response Ok(), NotFound(), BadRequest() egula support kore 
 {
@@ -103,5 +103,18 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
         product.Price = request.Price;
 
         return Ok(product);
+    }
+
+    [HttpDelete("deleteProduct")]
+    public IActionResult DeleteProduct(int id, StockRequest request)
+    {
+        var product = _products.FirstOrDefault(p => p.Id == id);
+        if (product == null)
+        {
+            return NotFound();
+
+        }
+        _products.Remove(product);
+        return NoContent();
     }
 }

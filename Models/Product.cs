@@ -2,11 +2,10 @@ namespace InventoryManagement.Models;
 
 public class Product
 {
-    public int Id { get; set; }//get set na kole model binding fail korbe/database a colomn create hobe nah /json sirialization fail korbe/get valu read kore and set value change kore 
+    public int Id { get; set; } // get set na korle model binding fail korbe / database a column create hobe nah / json serialization fail korbe / get value read kore and set value change kore 
     public string Name { get; set; } = string.Empty;
     public decimal Price { get; set; }
     public int Stock { get; set; }
-<<<<<<< HEAD
     public int quantity { get; set; }
 
     public Product()
@@ -17,8 +16,11 @@ public class Product
     public Product(string name, decimal price, int stock)
     {
         Console.WriteLine("this is a constructor");
-        Name = name; Price = price; Stock = stock;
+        Name = name;
+        Price = price;
+        Stock = stock;
     }
+
     public void AddStock(int quantity)
     {
         if (quantity <= 0)
@@ -27,7 +29,6 @@ public class Product
         }
 
         Stock = Stock + quantity;
-
     }
 
     public void ReduceStock(int quantity)
@@ -42,7 +43,4 @@ public class Product
         }
         Stock -= quantity;
     }
-=======
->>>>>>> 4724b1dd94b122ecb981d6edf46f7c988e5fdb05
-
 }
