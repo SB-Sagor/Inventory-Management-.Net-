@@ -1,18 +1,12 @@
-<<<<<<< HEAD
-using InventoryManagement.Models;
-using Microsoft.AspNetCore.Mvc;
 using InventoryManagement.DTOs;
-=======
-using Microsoft.AspNetCore.Mvc;
 using InventoryManagement.Models;
+using Microsoft.AspNetCore.Mvc;
 
->>>>>>> 4724b1dd94b122ecb981d6edf46f7c988e5fdb05
 namespace InventoryManagement.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-<<<<<<< HEAD
-public class ProductsController : ControllerBase//build in api er response Ok(), NotFound(), BadRequest()egula support kore 
+public class ProductsController : ControllerBase // built-in api er response Ok(), NotFound(), BadRequest() egula support kore 
 {
     private static readonly List<Product> _products =
     [
@@ -37,20 +31,17 @@ public class ProductsController : ControllerBase//build in api er response Ok(),
             Price = 2500m,
             Stock = 25,
         },
-
     ];
 
-
     [HttpGet]
-    public IEnumerable<Product> GetProducts()//kono check need hoy na
+    public IEnumerable<Product> GetProducts() // kono check need hoy na
     {
-        return _products;//direct procuct list return kore 
+        return _products; // direct product list return kore 
     }
 
     [HttpPost]
-    public IActionResult CreateProduct(CreateProductRequest request)//iaction dotnet er return type ja http response pathete pare 200/400/404 and eti mvc er interface
+    public IActionResult CreateProduct(CreateProductRequest request) // IActionResult dotnet er return type ja http response pathate pare 200/400/404
     {
-
         var product = new Product
         {
             Id = _products.Count + 1,
@@ -59,15 +50,14 @@ public class ProductsController : ControllerBase//build in api er response Ok(),
             Stock = request.Stock
         };
 
-
-        _products.Add(product);//product ke list a add korbe
+        _products.Add(product); // product ke list a add korbe
         return Ok(product);
     }
 
     [HttpPost("add-stock")]
     public IActionResult AddStock(int id, StockRequest request)
     {
-        var product = _products.FirstOrDefault(p => p.Id == id);//p temporary parameter p na likeh onno name o deya jete parto object ke represent kore
+        var product = _products.FirstOrDefault(p => p.Id == id); // p temporary parameter
 
         if (product == null)
         {
@@ -78,7 +68,6 @@ public class ProductsController : ControllerBase//build in api er response Ok(),
     }
 
     [HttpGet("search")]
-
     public IActionResult SearchProduct(string name)
     {
         if (string.IsNullOrWhiteSpace(name))
@@ -86,28 +75,22 @@ public class ProductsController : ControllerBase//build in api er response Ok(),
             return BadRequest();
         }
         var products = _products
-        .Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase))//where collection returen kore 
-        .ToList();
+            .Where(p => p.Name.Contains(name, StringComparison.OrdinalIgnoreCase)) // where collection return kore 
+            .ToList();
 
         return Ok(products);
     }
 
     [HttpGet("GetProductById")]
-
     public IActionResult GetProductById(int id)
     {
-
-
-        var products = _products.
-        FirstOrDefault(p => p.Id == id);
+        var products = _products.FirstOrDefault(p => p.Id == id);
         if (products == null)
         {
             return NotFound();
         }
-        else
-            return Ok(products);
+        return Ok(products);
     }
-
 
     [HttpPatch("updateProduct")]
     public IActionResult UpdateProduct(int id, UpdateProduct request)
@@ -119,35 +102,6 @@ public class ProductsController : ControllerBase//build in api er response Ok(),
         }
         product.Price = request.Price;
 
-
         return Ok(product);
     }
 }
-=======
-
-public class ProductsController : ControllerBase
-{
-    private static readonly List<Product> _products = [
-
-        new Product{
-Id=1,Name="laptop",Price=7500m,Stock=10
-    },
-    new Product{
-        Id=2,Name="Mouse",Price=1200m,Stock=50
-
-    },
-
-new Product{
-            Id=2,Name="Keboard",Price=2500m,Stock=25
-
-
-    }
-
-    ];
-    [HttpGet]
-    public IEnumerable<Product> GetProducts()
-    {
-        return _products;
-    }
-}
->>>>>>> 4724b1dd94b122ecb981d6edf46f7c988e5fdb05
