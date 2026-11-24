@@ -2,7 +2,9 @@ using InventoryManagement.DTOs;
 using InventoryManagement.Models;
 using Microsoft.AspNetCore.Mvc;
 using InventoryManagement.Services;
+using InventoryManagement.Interfaces;
 namespace InventoryManagement.Controllers;
+
 
 [ApiController]//api controller behaivour enable kore 
 [Route("api/[controller]")]
@@ -34,16 +36,18 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
     // ];
 
 
-    private readonly ProductService _productService;
+    // private readonly ProductService _productService;
+    private readonly IProductService _productService;
 
-    public ProductsController(ProductService productService)
+
+    public ProductsController(IProductService productService)//or ProductService
     {
         _productService = productService;
     }
 
     [HttpGet]
-    public IEnumerable<Product> GetProducts() // kono check need hoy na
-    {
+    public IEnumerable<ProductResponse> GetProducts() // kono check need hoy na
+    {//age product return type chilo
         // return _products; // direct product list return kore 
         return _productService.GetProducts();
     }
@@ -62,7 +66,8 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
         // _products.Add(product); // product ke list a add korbe
         // return Ok(product);
         var product = _productService.CreateProduct(request);
-        return Ok(product);
+        // return Ok(product);
+        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);//CreatedAtAction(nameof(ActionName),routeValues, responseBody);
     }
 
     [HttpPost("add-stock")]
