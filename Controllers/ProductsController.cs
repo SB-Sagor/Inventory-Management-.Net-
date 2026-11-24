@@ -1,7 +1,7 @@
 using InventoryManagement.DTOs;
 using InventoryManagement.Models;
 using Microsoft.AspNetCore.Mvc;
-using InventoryManagement.Services;
+using InventoryManagement.Repositories;
 using InventoryManagement.Interfaces;
 namespace InventoryManagement.Controllers;
 
@@ -37,19 +37,21 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
 
 
     // private readonly ProductService _productService;
-    private readonly IProductService _productService;
-
-
-    public ProductsController(IProductService productService)//or ProductService
+    // private readonly IProductService _productService;
+    private readonly IProductRepository _productRepository;
+    //dependency injection //constroctor 
+    public ProductsController(IProductRepository productRepository)//or ProductService
     {
-        _productService = productService;
+        // _productService = productService;
+        _productRepository = productRepository;
     }
 
     [HttpGet]
-    public IEnumerable<ProductResponse> GetProducts() // kono check need hoy na
+    public IActionResult GetProducts() // kono check need hoy na
     {//age product return type chilo
         // return _products; // direct product list return kore 
-        return _productService.GetProducts();
+        var products = _productRepository.GetAll();
+        return Ok(products);
     }
 
     [HttpPost]
@@ -65,9 +67,18 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
 
         // _products.Add(product); // product ke list a add korbe
         // return Ok(product);
-        var product = _productService.CreateProduct(request);
+        var product = new Product
+        {
+            Name = request.Name,
+            Price = request.Price,
+            Stock = request.Stock
+        };
+        var savedProduct = _productRepository.Add(product);
         // return Ok(product);
-        return CreatedAtAction(nameof(GetProductById), new { id = product.Id }, product);//CreatedAtAction(nameof(ActionName),routeValues, responseBody);
+        return CreatedAtAction(
+            nameof(GetProductById),
+             new { id = savedProduct.Id },
+              savedProduct);//CreatedAtAction(nameof(ActionName),routeValues, responseBody);
     }
 
     [HttpPost("add-stock")]
@@ -82,7 +93,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
         // product.AddStock(request.Quantity);
         // return Ok(product);
 
-        var product = _productService.AddStock(id, request);
+        var product = _productRepository.AddStock(id, request.Quantity);
         if (product == null)
         {
             return NotFound();
@@ -106,7 +117,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
         {
             return BadRequest();
         }
-        var products = _productService.SearchProduct(name);
+        var products = _productRepository.Search(name);
 
 
         return Ok(products);
@@ -122,7 +133,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
         //     return NotFound();
         // }
         // return Ok(products);
-        var products = _productService.GetProductById(id);
+        var products = _productRepository.GetById(id);
         if (products == null)
         {
             return NotFound();
@@ -142,7 +153,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
 
         // return Ok(product);
 
-        var product = _productService.UpdateProduct(id, request);
+        var product = _productRepository.UpdateProduct(id, request.Price);
         if (product == null)
         {
             return NotFound();
@@ -164,8 +175,10 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
         // _products.Remove(product);
         // return NoContent();
 
-        var product = _productService.DeleteProduct(id);
-        if (product == null)
+        // var product = _productRepository.Delete(id);
+        bool isDeleted = _productRepository.Delete(id);
+
+        if (!isDeleted)
         {
             return NotFound();
 

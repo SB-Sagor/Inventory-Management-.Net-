@@ -34,7 +34,7 @@ public class ProductRepository : IProductRepository
         return _products;
     }
 
-    public Product? GetById(int id)
+    public Product? GetById(int id)//finding id
     {
         return _products.FirstOrDefault(p => p.Id == id);
     }
@@ -51,9 +51,26 @@ public class ProductRepository : IProductRepository
         _products.Add(product);
         return product;
     }
-
-    public bool Delete(Product product)
+    public Product? AddStock(int id, int quantity)
     {
+        var product = GetById(id);
+        if (product == null) return null;
+        product.AddStock(quantity);
+        return product;
+    }
+
+    public Product? UpdateProduct(int id, decimal price)
+    {
+        var product = GetById(id);
+        if (product == null) return null;
+        product.Price = price;
+        return product;
+    }
+    public bool Delete(int id)
+    {
+        var product = GetById(id);
+        if (product == null)
+            return false;
         return _products.Remove(product);
     }
 }
