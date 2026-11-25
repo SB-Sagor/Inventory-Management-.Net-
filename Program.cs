@@ -2,8 +2,10 @@ using InventoryManagement.Interfaces;
 using InventoryManagement.Repositories;
 using InventoryManagement.Data;
 using Microsoft.EntityFrameworkCore;
-var builder = WebApplication.CreateBuilder(args); // dotnet er built-in method ja application startup er jonno proyojonio configuration ready kore 
+using InventoryManagement.Models;
+using Microsoft.AspNetCore.Identity;
 
+var builder = WebApplication.CreateBuilder(args); // dotnet er built-in method ja application startup er jonno proyojonio configuration ready kore 
 // Add services to the container.
 builder.Services.AddControllers(); // addcontrollers dotnet ke janasse je controller support configuration hobe
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -13,12 +15,33 @@ builder.Services.AddSwaggerGen();
 // builder.Services.AddSingleton< ProductService>();
 
 builder.Services.AddDbContext<InventoryDbContext>(options =>
-    options.UseNpgsql(
+    options.UseNpgsql(//ef core ke janasse je postgres use korte hobe
         builder.Configuration.GetConnectionString("DefaultConnection")
     )
 );
+// Register Data Protection services
+builder.Services.AddDataProtection();
+
+builder.Services
+//Identity User Management register
+    .AddIdentityCore<ApplicationUser>(options =>
+    {
+        options.Password.RequiredLength = 8;
+        options.Password.RequireDigit = false;
+        options.Password.RequireUppercase = false;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+
+        options.User.RequireUniqueEmail = true;
+    })
+    .AddRoles<IdentityRole>()//Role Management enable
+    .AddEntityFrameworkStores<InventoryDbContext>()//PostgreSQL DbContext er shathe connected
+    .AddDefaultTokenProviders();//default token providers register
+
+
 // builder.Services.AddSingleton<IProductService, ProductService>();//shob redic cache a singleton use hobe ta na and share state thread safe kina etio dkehte hobe
-builder.Services.AddSingleton<IProductRepository, ProductRepository>();//AddSingleton()application start hole ekbar object create kore redis memory cache logger
+builder.Services.AddScoped<IProductRepository, ProductRepository>();//for database connection use AddScoped()
+// builder.Services.AddSingleton<IProductRepository, ProductRepository>();//object er life time nirdaron kore AddSingleton()application start hole ekbar object create kore redis memory cache logger
 //AddScoped() protiti http request er jonno ekbar and AddTransient() protibar call korar shahteh shathe new object create korbe appdebcontext product service and khubi lightweight and sms email pathanor jonno eti dependency resolve hole new intance hoy  
 var app = builder.Build(); // builder diye application configure kori and app diye request pipeline configure kori 
 

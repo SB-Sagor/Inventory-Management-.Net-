@@ -54,8 +54,8 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
         return Ok(products);
     }
 
-    [HttpPost]
-    public IActionResult CreateProduct(CreateProductRequest request) // IActionResult dotnet er return type ja http response pathate pare 200/400/404
+    [HttpPost("create_product")]
+    public async Task<IActionResult> CreateProduct(CreateProductRequest request) // IActionResult dotnet er return type ja http response pathate pare 200/400/404
     {
         // var product = new Product
         // {
@@ -73,7 +73,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
             Price = request.Price,
             Stock = request.Stock
         };
-        var savedProduct = _productRepository.Add(product);
+        var savedProduct = await _productRepository.Add(product);
         // return Ok(product);
         return CreatedAtAction(
             nameof(GetProductById),
@@ -82,7 +82,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
     }
 
     [HttpPost("add-stock")]
-    public IActionResult AddStock(int id, StockRequest request)
+    public async Task<IActionResult> AddStock(int id, StockRequest request)
     {
         // var product = _products.FirstOrDefault(p => p.Id == id); // p temporary parameter
 
@@ -93,7 +93,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
         // product.AddStock(request.Quantity);
         // return Ok(product);
 
-        var product = _productRepository.AddStock(id, request.Quantity);
+        var product = await _productRepository.AddStock(id, request.Quantity);
         if (product == null)
         {
             return NotFound();
@@ -142,7 +142,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
     }
 
     [HttpPatch("updateProduct")]
-    public IActionResult UpdateProduct(int id, UpdateProduct request)
+    public async Task<IActionResult> UpdateProduct(int id, UpdateProduct request)
     {
         // var product = _products.FirstOrDefault(p => p.Id == id);
         // if (product == null)
@@ -153,7 +153,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
 
         // return Ok(product);
 
-        var product = _productRepository.UpdateProduct(id, request.Price);
+        var product = await _productRepository.UpdateProduct(id, request.Price);
         if (product == null)
         {
             return NotFound();
@@ -164,7 +164,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
     }
 
     [HttpDelete("deleteProduct")]
-    public IActionResult DeleteProduct(int id)
+    public async Task<IActionResult> DeleteProduct(int id)
     {
         // var product = _products.FirstOrDefault(p => p.Id == id);
         // if (product == null)
@@ -176,7 +176,7 @@ public class ProductsController : ControllerBase // built-in api er response Ok(
         // return NoContent();
 
         // var product = _productRepository.Delete(id);
-        bool isDeleted = _productRepository.Delete(id);
+        bool isDeleted = await _productRepository.Delete(id);
 
         if (!isDeleted)
         {
